@@ -95,6 +95,11 @@ public class AssetLoader {
         player = new TextureRegion(playerTexture, 0, 0, 18, 24);
         player.flip(false, true);
 
+        Texture roadLinesTexture = new Texture(Gdx.files.internal("lines.png"));
+        roadLinesTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        roadLine = new TextureRegion(playerTexture, 0, 0, 480, 840);
+        roadLine.flip(false, true);
+
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music.wav"));
         backgroundMusic.setLooping(true);
 

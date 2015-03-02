@@ -12,15 +12,15 @@ public class ScrollHandler {
     private static final int NUMBER_OF_ENEMY_CARS = 6;
     public static final int MIN_Y = -190;
     public static final int MAX_Y = -250;
-    public static final int MIN_X = 0;
-    public static final int MAX_X = 110;
+    public static final int MIN_X = 30;
+    public static final int MAX_X = 100;
     private GameWorld gameWorld;
 
     public ScrollHandler(GameWorld gameWorld, float yPos) {
         this.gameWorld = gameWorld;
         this.enemyCars = new ArrayList<EnemyCar>();
         for(int i=0;i < NUMBER_OF_ENEMY_CARS;i++){
-            enemyCars.add(new EnemyCar(Utils.getRandomNumberBetween(MIN_X, MAX_X), Utils.getRandomNumberBetween(MIN_Y, MAX_Y), 5, 8, Utils.getRandomNumberBetween(MIN_SCROLL_SPEED, MAX_SCROLL_SPEED), yPos));
+            enemyCars.add(new EnemyCar(Utils.getRandomIntBetween(MIN_X, MAX_X), Utils.getRandomNumberBetween(MIN_Y, MAX_Y), 5, 8, Utils.getRandomNumberBetween(MIN_SCROLL_SPEED, MAX_SCROLL_SPEED), yPos));
         }
     }
 
@@ -34,7 +34,7 @@ public class ScrollHandler {
             enemyCar.update(delta);
 
             if (enemyCar.isScrolledUp()) {
-                enemyCar.reset(Utils.getRandomNumberBetween(MIN_X, MAX_X), Utils.getRandomNumberBetween(MIN_Y, MAX_Y));
+                enemyCar.reset(Utils.getRandomIntBetween(MIN_X, MAX_X), Utils.getRandomNumberBetween(MIN_Y, MAX_Y));
             }
         }
     }
