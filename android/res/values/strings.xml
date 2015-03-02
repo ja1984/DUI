@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Car Game</string>
+    <string name="gamehelper_unknown_error">Unkown error</string>
+    <string name="gamehelper_sign_in_failed">Sign in failed</string>
+    <string name="gamehelper_license_failed">Invalid license</string>
+    <string name="gamehelper_app_misconfigured">App missconfigured</string>
+    <string name="admobId">xxx</string>
+    <string name="leaderboard_main">xxx</string>
+
+</resources>
