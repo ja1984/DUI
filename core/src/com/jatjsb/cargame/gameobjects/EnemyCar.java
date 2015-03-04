@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.jatjsb.cargame.helpers.AssetLoader;
+import com.jatjsb.cargame.world.GameWorld;
 
 import sun.rmi.runtime.Log;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.addAction;
 
 /**
  * Created by knepe on 2015-02-25.
@@ -20,9 +23,12 @@ public class EnemyCar extends Actor {
 
     private Rectangle bounds = new Rectangle();
     private Boolean isOncoming;
+    private long lastCarTime = 0;
+    private int lane;
 
-    public EnemyCar(float x, float y, Boolean isOncoming) {
+    public EnemyCar(float x, float y, Boolean isOncoming, int lane) {
         this.isOncoming = isOncoming;
+        this.lane = lane;
         setWidth(19);
         setHeight(30);
         Gdx.app.log("Height", "" + getHeight());
@@ -47,6 +53,7 @@ public class EnemyCar extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        changeLane();
         updateBounds();
     }
 
@@ -54,6 +61,34 @@ public class EnemyCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, getRotation());
+    }
+
+    private void changeLane(){
+        if(!shouldChangeLane()) return;
+
+        if(isOncoming){
+            setPosition(lane == 0 ? GameWorld.lane1 : GameWorld.lane0,getY());
+            addAction(moveTo( lane == 0 ? GameWorld.lane1 : GameWorld.lane0,getY()));
+            return;
+        }
+
+        setPosition(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,getY());
+        addAction(moveTo(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,getY()));
+    }
+
+    private Boolean timeForAction(){
+        return (TimeUtils.nanoTime() - lastCarTime > (3000000000f));
+    }
+
+    private Boolean shouldChangeLane(){
+
+        if(timeForAction()) {
+            Gdx.app.log("Should change","Yes");
+            lastCarTime = TimeUtils.nanoTime();
+            return MathUtils.random(0, 10) < 9;
+        }
+
+        return false;
     }
 
     private void updateBounds() {

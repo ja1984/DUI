@@ -22,10 +22,10 @@ public class GameWorld extends Table {
     private Lines lines;
     private Array<EnemyCar> enemyCars;
     private long lastCarTime = 0;
-    public final float lane3 = 345;
-    public final float lane2 = 270;
-    public final float lane1 = 190;
-    public final float lane0 = 120;
+    public static final float lane3 = 345;
+    public static final float lane2 = 270;
+    public static final float lane1 = 190;
+    public static final float lane0 = 120;
     public PlayerCar playerCar;
     private Random random;
 
@@ -57,7 +57,7 @@ public class GameWorld extends Table {
             yPos = lane2;
         if (lane == 3)
             yPos = lane3;
-        EnemyCar enemyCar = new EnemyCar(getHeight(), yPos, isIncoming);
+        EnemyCar enemyCar = new EnemyCar(getHeight(), yPos, isIncoming, (int)yPos);
         enemyCars.add(enemyCar);
         addActor(enemyCar);
         lastCarTime = TimeUtils.nanoTime();
