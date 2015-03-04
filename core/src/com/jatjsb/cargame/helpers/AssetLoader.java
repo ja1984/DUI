@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by knepe on 2015-02-25.
  */
 public class AssetLoader {
-    public static TextureRegion road, enemyCar, playerCar;
+    public static TextureRegion road, enemyCar, playerCar, lines;
     public static Music backgroundMusic;
     public static Sound pop;
     private static ArrayList<TextureRegion> balloonTextureRegions = new ArrayList<TextureRegion>();
@@ -25,6 +25,10 @@ public class AssetLoader {
         Texture bgTexture = new Texture(Gdx.files.internal("road.png"));
         road = new TextureRegion(bgTexture, 0, 0, 480, 840);
         road.flip(false, true);
+
+        Texture linesTexture = new Texture(Gdx.files.internal("lines.png"));
+        lines = new TextureRegion(linesTexture, 0, 0, 480, 840);
+        lines.flip(false, true);
 
         Texture carTexture = new Texture(Gdx.files.internal("garbagetruck.png"));
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

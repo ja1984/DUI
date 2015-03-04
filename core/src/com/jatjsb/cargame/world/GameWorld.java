@@ -2,13 +2,12 @@ package com.jatjsb.cargame.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.jatjsb.cargame.gameobjects.EnemyCar;
-import com.jatjsb.cargame.gameobjects.InfiniteScrollBg;
+import com.jatjsb.cargame.gameobjects.Lines;
 import com.jatjsb.cargame.gameobjects.PlayerCar;
 import com.jatjsb.cargame.gameobjects.Road;
 
@@ -20,12 +19,13 @@ import java.util.Random;
  */
 public class GameWorld extends Table {
     private Road road;
+    private Lines lines;
     private Array<EnemyCar> enemyCars;
     private long lastCarTime = 0;
-    public final float lane3 = 350;
-    public final float lane2 = 300;
-    public final float lane1 = 180;
-    public final float lane0 = 110;
+    public final float lane3 = 345;
+    public final float lane2 = 270;
+    public final float lane1 = 190;
+    public final float lane0 = 120;
     public PlayerCar playerCar;
     private Random random;
 
@@ -33,9 +33,12 @@ public class GameWorld extends Table {
         setBounds(0, 0, 480, 800);
         setClip(true);
         road = new Road(getWidth(), getHeight());
+        lines = new Lines(getWidth(), getHeight());
         addActor(road);
+        addActor(lines);
         playerCar = new PlayerCar(this);
         addActor(playerCar);
+
         random = new Random();
         enemyCars = new Array<EnemyCar>();
     }
