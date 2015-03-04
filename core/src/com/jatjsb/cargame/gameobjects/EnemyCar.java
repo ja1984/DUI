@@ -1,123 +1,65 @@
 package com.jatjsb.cargame.gameobjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jatjsb.cargame.helpers.AssetLoader;
-import com.jatjsb.cargame.helpers.Utils;
-import com.jatjsb.cargame.world.GameRenderer;
 
-import java.util.Random;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * Created by knepe on 2015-02-25.
  */
-public class EnemyCar extends Scrollable {
+public class EnemyCar extends Actor {
 
-    private Random r;
+    private Rectangle bounds = new Rectangle();
+    private Boolean isOncoming;
 
-    private Rectangle balloon;
-    private boolean isPressed;
-    public ParticleEffect particleEffect;
-    public GameRenderer renderer;
-    private TextureRegion textureRegion;
-    public HiddenObject hiddenObject;
+    public EnemyCar(float x, float y, Boolean isOncoming) {
+        this.isOncoming = isOncoming;
+        setWidth(160);
+        setHeight(85);
+        setPosition(x, y - getHeight() / 2);
 
-    // When Pipe's constructor is invoked, invoke the super (Scrollable)
-    // constructor
-    public EnemyCar(float x, float y, int width, int height, float scrollSpeed,
-                    float groundY) {
-        super(x, y, width, height, scrollSpeed);
-        // Initialize a Random object for Random number generation
-        r = new Random();
-        balloon = new Rectangle();
-        this.particleEffect = AssetLoader.getParticleEffect();
-        this.textureRegion = AssetLoader.car;
-        createHiddenObject();
+        int rnd = MathUtils.random(0, 3);
+        if (rnd == 0)
+            setColor(Color.RED);
+        if (rnd == 1)
+            setColor(Color.GREEN);
+        if (rnd == 2)
+            setColor(Color.WHITE);
+        if (rnd == 3)
+            setColor(Color.BLUE);
 
+        addAction(moveTo(-getWidth(), getY(), MathUtils.random(4.0f, 6.0f)));
     }
 
     @Override
-    public void update(float delta) {
-        // Call the update method in the superclass (Scrollable)
-        super.update(delta);
-
-        // The set() method allows you to set the top left corner's x, y
-        // coordinates,
-        // along with the width and height of the rectangle
-        balloon.set(position.x, position.y, width, height);
-
-        if(this.hiddenObject != null && !this.hiddenObject.getIsVisible())
-        {
-            this.hiddenObject.setPosition(position.x, position.y);
-            this.hiddenObject.update(delta);
-        }
+    public void act(float delta) {
+        super.act(delta);
+        updateBounds();
     }
 
     @Override
-    public void reset(float newX, float newY) {
-        // Call the reset method in the superclass (Scrollable)
-        super.reset(newX, newY);
-
-        isPressed = false;
-        this.textureRegion = AssetLoader.car;
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
+        batch.draw(AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, getRotation());
     }
 
-    private void createHiddenObject(){
-        if(Utils.getRandomIntBetween(1, 25) < 10){
-            hiddenObject = new Fruit(position.x, position.y);
-        }
-        else if(Utils.getRandomIntBetween(25, 50) < 30){
-            hiddenObject = new Spider(position.x, position.y);
-        }
-        else{
-            hiddenObject = null;
-        }
+    private void updateBounds() {
+        bounds.set(getX(), getY(), getWidth(), getHeight());
     }
 
-    public void onRestart(float x, float y, float scrollSpeed) {
-        createHiddenObject();
-        velocity.y = scrollSpeed;
-        reset(x, y);
-        isPressed = false;
+    public void crash(boolean front, boolean above) {
+        clearActions();
+        addAction(fadeOut(1f));
+        removeActor();
     }
 
-    public Rectangle getBalloon() {
-        return balloon;
-    }
-
-    public boolean touchDown(int screenX, int screenY){
-        if(balloon.contains(screenX, screenY)){
-            isPressed = true;
-        }
-
-        return isPressed;
-    }
-
-    public boolean touchUp(int screenX, int screenY){
-        if(balloon.contains(screenX, screenY) && isPressed){
-            if(this.hiddenObject != null){
-                this.hiddenObject.setRenderer(this.renderer);
-                this.hiddenObject.setVisible(true);
-                renderer.hiddenObjects.add(this.hiddenObject);
-            }
-
-            AssetLoader.pop.play();
-            onRestart(Utils.getRandomNumberBetween(ScrollHandler.MIN_X, ScrollHandler.MAX_X), Utils.getRandomNumberBetween(ScrollHandler.MIN_Y, ScrollHandler.MAX_Y), Utils.getRandomNumberBetween(ScrollHandler.MIN_SCROLL_SPEED, ScrollHandler.MAX_SCROLL_SPEED));
-            return true;
-        }
-
-        isPressed = false;
-
-        return false;
-    }
-
-    public void setRenderer(GameRenderer renderer) {
-        this.renderer = renderer;
-    }
-
-    public TextureRegion getTextureRegion(){
-        return textureRegion;
+    public Rectangle getBounds() {
+        return bounds;
     }
 }

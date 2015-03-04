@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.jatjsb.cargame.CarGame;
 import com.jatjsb.cargame.interfaces.EmptyHandleAds;
 import com.jatjsb.cargame.interfaces.EmptyHandleGooglePlay;
+import com.jatjsb.cargame.screens.MyGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -12,6 +13,6 @@ public class DesktopLauncher {
         cfg.width = 720;
         cfg.height = 1024;
 
-		new LwjglApplication(new CarGame(new EmptyHandleGooglePlay(), new EmptyHandleAds()), cfg);
+		new LwjglApplication( new MyGame(), cfg);
 	}
 }

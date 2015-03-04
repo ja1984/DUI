@@ -1,132 +1,93 @@
 package com.jatjsb.cargame.world;
 
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
-import com.jatjsb.cargame.gameobjects.Player;
-import com.jatjsb.cargame.gameobjects.ScrollHandler;
-import com.jatjsb.cargame.helpers.AssetLoader;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.jatjsb.cargame.gameobjects.EnemyCar;
+import com.jatjsb.cargame.gameobjects.InfiniteScrollBg;
+import com.jatjsb.cargame.gameobjects.PlayerCar;
+
+import java.util.Iterator;
+import java.util.Random;
 
 /**
- * Created by knepe on 2015-02-25.
+ * Created by jonathan on 2015-03-03.
  */
-public class GameWorld {
-    private Player player;
-    private ScrollHandler scroller;
-    private Rectangle ground;
-    private int score = 0;
-    private float runTime = 0;
-    private int midPointY;
-    private GameRenderer renderer;
+public class GameWorld extends Table {
+    private InfiniteScrollBg backgroundRoad;
+    private Array<EnemyCar> enemyCars;
+    private long lastCarTime = 0;
+    public final float lane2 = 390;
+    public final float lane1 = 240;
+    public final float lane0 = 90;
+    public PlayerCar playerCar;
+    private Random random;
 
-    private GameState currentState;
-
-    public enum GameState {
-        MENU, READY, RUNNING, GAMEOVER, HIGHSCORE
+    public GameWorld() {
+        setBounds(0, 0, 800, 480);
+        setClip(true);
+        backgroundRoad = new InfiniteScrollBg(getWidth(), getHeight());
+        addActor(backgroundRoad);
+        playerCar = new PlayerCar(this);
+        addActor(playerCar);
+        random = new Random();
+        enemyCars = new Array<EnemyCar>();
     }
 
-    public GameWorld(int midPointY) {
-        currentState = GameState.RUNNING;
-        this.midPointY = midPointY;
-        player = new Player(65, 120, 4, 6);
-        // The sand should start 66 pixels below the midPointY
-        scroller = new ScrollHandler(this, midPointY + 66);
-        ground = new Rectangle(0, midPointY + 66, 137, 11);
+    private void spawnCar() {
+        int lane = MathUtils.random(0, 2);
+        float yPos = 0;
+        if (lane == 0)
+            yPos = lane0;
+        if (lane == 1)
+            yPos = lane1;
+        if (lane == 2)
+            yPos = lane2;
+        EnemyCar enemyCar = new EnemyCar(getWidth(), yPos, random.nextBoolean());
+        enemyCars.add(enemyCar);
+        addActor(enemyCar);
+        lastCarTime = TimeUtils.nanoTime();
     }
 
-    public void update(float delta) {
-        runTime += delta;
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(Color.WHITE);
+        super.draw(batch, parentAlpha);
+    }
 
-        switch (currentState) {
-            case READY:
-            case MENU:
-                updateReady(delta);
-                break;
+    @Override
+    public void act(float delta){
+        super.act(delta);
 
-            case RUNNING:
-                updateRunning(delta);
-                break;
-            default:
-                break;
+        if (TimeUtils.nanoTime() - lastCarTime > 3000000000f)
+            spawnCar();
+
+        Iterator<EnemyCar> iter = enemyCars.iterator();
+        while (iter.hasNext()) {
+            EnemyCar enemyCar = iter.next();
+            if (enemyCar.getBounds().x + enemyCar.getWidth() <= 0) {
+                iter.remove();
+                removeActor(enemyCar);
+            }
+            if (enemyCar.getBounds().overlaps(playerCar.getBounds())) {
+                iter.remove();
+                if (enemyCar.getX() > playerCar.getX()) {
+                    if (enemyCar.getY() > playerCar.getY())
+                        enemyCar.crash(true, true);
+                    else
+                        enemyCar.crash(true, false);
+                } else {
+                    if (enemyCar.getY() > playerCar.getY())
+                        enemyCar.crash(false, true);
+                    else
+                        enemyCar.crash(false, false);
+                }
+            }
         }
-
-    }
-
-    private void updateReady(float delta) {
-        player.updateReady(runTime);
-        scroller.updateReady(delta);
-    }
-
-    public void updateRunning(float delta) {
-        if (delta > .15f) {
-            delta = .15f;
-        }
-
-        player.update(delta);
-
-        scroller.update(delta);
-    }
-
-    public Player getPlayer() {
-        return player;
-
-    }
-
-    public int getMidPointY() {
-        return midPointY;
-    }
-
-    public ScrollHandler getScroller() {
-        return scroller;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void addScore(int increment) {
-        score += increment;
-    }
-
-    public void start() {
-        currentState = GameState.RUNNING;
-    }
-
-    public void ready() {
-        currentState = GameState.READY;
-    }
-
-    public void restart() {
-        score = 0;
-        scroller.onRestart();
-        ready();
-    }
-
-    public boolean isReady() {
-        return currentState == GameState.READY;
-    }
-
-    public boolean isGameOver() {
-        return currentState == GameState.GAMEOVER;
-    }
-
-    public boolean isHighScore() {
-        return currentState == GameState.HIGHSCORE;
-    }
-
-    public boolean isMenu() {
-        return currentState == GameState.MENU;
-    }
-
-    public boolean isRunning() {
-        return currentState == GameState.RUNNING;
-    }
-
-    public void setRenderer(GameRenderer renderer) {
-        this.renderer = renderer;
-    }
-
-    public GameRenderer getRenderer(){
-        return this.renderer;
     }
 
 }

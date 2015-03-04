@@ -1,16 +1,20 @@
 package com.jatjsb.cargame;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jatjsb.cargame.helpers.AssetLoader;
 import com.jatjsb.cargame.interfaces.IHandleAds;
 import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
 import com.jatjsb.cargame.screens.GameScreen;
 
-public class CarGame extends Game {
+public class CarGame implements ApplicationListener {
+    public final static int WIDTH = 800;
+    public final static int HEIGHT = 480;
+
     public CarGame(IHandleGooglePlay googlePlayHandler, IHandleAds adsHandler) {
         super();
-
         this.googlePlayHandler = googlePlayHandler;
         this.adsHandler = adsHandler;
     }
@@ -20,14 +24,31 @@ public class CarGame extends Game {
 
     @Override
     public void create() {
-        Gdx.input.setCatchBackKey(true);
-        AssetLoader.load();
-        setScreen(new GameScreen(this));
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void render() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     @Override
     public void dispose() {
-        super.dispose();
-        AssetLoader.dispose();
+
     }
 }
