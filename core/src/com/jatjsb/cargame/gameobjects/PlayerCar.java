@@ -19,8 +19,8 @@ public class PlayerCar extends Actor {
 
     public PlayerCar(GameWorld trafficGame) {
         this.trafficGame = trafficGame;
-        setWidth(160);
-        setHeight(85);
+        setWidth(18);
+        setHeight(24);
         lane = 1;
         setPosition(100, trafficGame.lane1 - getHeight() / 2);
         setColor(Color.YELLOW);
@@ -35,7 +35,7 @@ public class PlayerCar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
-        batch.draw(AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2,
+        batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2,
                 getWidth(), getHeight(), 1, 1, getRotation());
     }
 

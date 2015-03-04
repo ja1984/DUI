@@ -7,8 +7,8 @@ import com.jatjsb.cargame.helpers.AssetLoader;
  * Created by jonathan on 2015-03-04.
  */
 public class MyGame extends Game {
-    public final static int WIDTH = 800;
-    public final static int HEIGHT = 480;
+    public final static int WIDTH = 480;
+    public final static int HEIGHT = 800;
     private GameScreen gameScreen;
 
     @Override

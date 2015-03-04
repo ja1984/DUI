@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.jatjsb.cargame.gameobjects.EnemyCar;
 import com.jatjsb.cargame.gameobjects.InfiniteScrollBg;
 import com.jatjsb.cargame.gameobjects.PlayerCar;
+import com.jatjsb.cargame.gameobjects.Road;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -18,20 +19,21 @@ import java.util.Random;
  * Created by jonathan on 2015-03-03.
  */
 public class GameWorld extends Table {
-    private InfiniteScrollBg backgroundRoad;
+    private Road road;
     private Array<EnemyCar> enemyCars;
     private long lastCarTime = 0;
-    public final float lane2 = 390;
-    public final float lane1 = 240;
-    public final float lane0 = 90;
+    public final float lane3 = 350;
+    public final float lane2 = 300;
+    public final float lane1 = 180;
+    public final float lane0 = 110;
     public PlayerCar playerCar;
     private Random random;
 
     public GameWorld() {
-        setBounds(0, 0, 800, 480);
+        setBounds(0, 0, 480, 800);
         setClip(true);
-        backgroundRoad = new InfiniteScrollBg(getWidth(), getHeight());
-        addActor(backgroundRoad);
+        road = new Road(getWidth(), getHeight());
+        addActor(road);
         playerCar = new PlayerCar(this);
         addActor(playerCar);
         random = new Random();
@@ -39,7 +41,10 @@ public class GameWorld extends Table {
     }
 
     private void spawnCar() {
-        int lane = MathUtils.random(0, 2);
+
+        Boolean isIncoming = random.nextBoolean();
+
+        int lane = MathUtils.random(isIncoming ? 0 : 2, isIncoming ? 1 : 3);
         float yPos = 0;
         if (lane == 0)
             yPos = lane0;
@@ -47,7 +52,9 @@ public class GameWorld extends Table {
             yPos = lane1;
         if (lane == 2)
             yPos = lane2;
-        EnemyCar enemyCar = new EnemyCar(getWidth(), yPos, random.nextBoolean());
+        if (lane == 3)
+            yPos = lane3;
+        EnemyCar enemyCar = new EnemyCar(getHeight(), yPos, isIncoming);
         enemyCars.add(enemyCar);
         addActor(enemyCar);
         lastCarTime = TimeUtils.nanoTime();
@@ -63,7 +70,7 @@ public class GameWorld extends Table {
     public void act(float delta){
         super.act(delta);
 
-        if (TimeUtils.nanoTime() - lastCarTime > 3000000000f)
+        if (TimeUtils.nanoTime() - lastCarTime > (1000000000f))
             spawnCar();
 
         Iterator<EnemyCar> iter = enemyCars.iterator();

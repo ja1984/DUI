@@ -14,7 +14,7 @@ public class InfiniteScrollBg extends Actor {
     public InfiniteScrollBg(float width, float height) {
         setWidth(width);
         setHeight(height);
-        setPosition(width, 0);
+        setPosition(0, 0);
         addAction(forever(sequence(moveTo(0, 0, 1f), moveTo(0, height))));
     }
 

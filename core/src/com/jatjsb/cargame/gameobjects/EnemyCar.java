@@ -1,5 +1,6 @@
 package com.jatjsb.cargame.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jatjsb.cargame.helpers.AssetLoader;
+
+import sun.rmi.runtime.Log;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -20,21 +23,25 @@ public class EnemyCar extends Actor {
 
     public EnemyCar(float x, float y, Boolean isOncoming) {
         this.isOncoming = isOncoming;
-        setWidth(160);
-        setHeight(85);
-        setPosition(x, y - getHeight() / 2);
+        setWidth(19);
+        setHeight(30);
+        Gdx.app.log("Height", "" + getHeight());
+        setPosition(y, 835);
 
-        int rnd = MathUtils.random(0, 3);
-        if (rnd == 0)
-            setColor(Color.RED);
-        if (rnd == 1)
-            setColor(Color.GREEN);
-        if (rnd == 2)
-            setColor(Color.WHITE);
-        if (rnd == 3)
-            setColor(Color.BLUE);
+        if(!isOncoming)
+            setRotation(180);
 
-        addAction(moveTo(-getWidth(), getY(), MathUtils.random(4.0f, 6.0f)));
+        //int rnd = MathUtils.random(0, 3);
+        //if (rnd == 0)
+        //    setColor(Color.RED);
+        //if (rnd == 1)
+        //    setColor(Color.GREEN);
+        //if (rnd == 2)
+        //    setColor(Color.WHITE);
+        //if (rnd == 3)
+        //    setColor(Color.BLUE);
+
+        addAction(moveTo(getX(), -30, MathUtils.random(4.0f, 6.0f)));
     }
 
     @Override

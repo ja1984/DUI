@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by knepe on 2015-02-25.
  */
 public class AssetLoader {
-    public static TextureRegion road, enemyCar;
+    public static TextureRegion road, enemyCar, playerCar;
     public static Music backgroundMusic;
     public static Sound pop;
     private static ArrayList<TextureRegion> balloonTextureRegions = new ArrayList<TextureRegion>();
@@ -30,6 +30,11 @@ public class AssetLoader {
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         enemyCar = new TextureRegion(carTexture, 0, 0, 19, 30);
         enemyCar.flip(false, false);
+
+        Texture playerTexture = new Texture(Gdx.files.internal("car.png"));
+        carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        playerCar = new TextureRegion(playerTexture, 0, 0, 18, 24);
+        playerCar.flip(false, false);
     }
 
     public static void setHighScore(int val) {
