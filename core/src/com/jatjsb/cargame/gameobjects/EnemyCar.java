@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.jatjsb.cargame.helpers.AssetLoader;
 import com.jatjsb.cargame.world.GameWorld;
@@ -15,6 +17,7 @@ import sun.rmi.runtime.Log;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.addAction;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 
 /**
  * Created by knepe on 2015-02-25.
@@ -47,13 +50,13 @@ public class EnemyCar extends Actor {
         //if (rnd == 3)
         //    setColor(Color.BLUE);
 
-        addAction(moveTo(getX(), -30, MathUtils.random(4.0f, 6.0f)));
+        addAction(moveTo(getX(), -30, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        changeLane();
+        //changeLane();
         updateBounds();
     }
 
@@ -67,13 +70,15 @@ public class EnemyCar extends Actor {
         if(!shouldChangeLane()) return;
 
         if(isOncoming){
-            setPosition(lane == 0 ? GameWorld.lane1 : GameWorld.lane0,getY());
-            addAction(moveTo( lane == 0 ? GameWorld.lane1 : GameWorld.lane0,getY()));
+            //setPosition(lane == 0 ? GameWorld.lane1 : GameWorld.lane0,getY());
+            addAction(moveTo(lane == 0 ? GameWorld.lane1 : GameWorld.lane0,(getY()-100),0.3f));
+            lane = (lane == 0 ? 1 : 0);
             return;
         }
 
-        setPosition(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,getY());
-        addAction(moveTo(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,getY()));
+        //setPosition(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,getY());
+        addAction(moveTo(lane == 2 ? GameWorld.lane3 : GameWorld.lane2,(getY() - 100),0.3f));
+        lane = (lane == 2 ? 3 : 2);
     }
 
     private Boolean timeForAction(){
@@ -83,7 +88,7 @@ public class EnemyCar extends Actor {
     private Boolean shouldChangeLane(){
 
         if(timeForAction()) {
-            Gdx.app.log("Should change","Yes");
+            //Gdx.app.log("Should change","Yes");
             lastCarTime = TimeUtils.nanoTime();
             return MathUtils.random(0, 10) < 9;
         }

@@ -15,14 +15,15 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 public class PlayerCar extends Actor {
     private GameWorld trafficGame;
     private Rectangle bounds = new Rectangle();
+    private Rectangle safetyBounds = new Rectangle();
     private int lane;
 
     public PlayerCar(GameWorld trafficGame) {
         this.trafficGame = trafficGame;
         setWidth(18);
         setHeight(24);
-        lane = 1;
-        setPosition(100, trafficGame.lane1 - getHeight() / 2);
+        lane = 2;
+        setPosition(trafficGame.lane2,150);
         setColor(Color.YELLOW);
     }
 
@@ -41,6 +42,10 @@ public class PlayerCar extends Actor {
 
     private void updateBounds() {
         bounds.set(getX(), getY(), getWidth(), getHeight());
+    }
+
+    private void updateSafetyBounds() {
+        safetyBounds.set(getX(), getY(), getWidth(), (getHeight() + 10));
     }
 
     public void tryMoveUp() {
@@ -71,5 +76,9 @@ public class PlayerCar extends Actor {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public Rectangle getSafetyBounds() {
+        return safetyBounds;
     }
 }
