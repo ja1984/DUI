@@ -23,7 +23,7 @@ public class PlayerCar extends Actor {
         setWidth(18);
         setHeight(24);
         lane = 2;
-        setPosition(trafficGame.lane2,150);
+        setPosition(trafficGame.lane0.x,150);
         setColor(Color.YELLOW);
     }
 
@@ -49,32 +49,16 @@ public class PlayerCar extends Actor {
     }
 
     public void tryMoveUp() {
-        if ((getActions().size == 0) && (lane != 2))
-            moveToLane(lane + 1);
+        //if ((getActions().size == 0) && (lane != 2))
+            //moveToLane(lane + 1);
     }
 
     public void tryMoveDown() {
-        if ((getActions().size == 0) && (lane != 0))
-            moveToLane(lane - 1);
+        //if ((getActions().size == 0) && (lane != 0))
+            //moveToLane(lane - 1);
     }
 
-    private void moveToLane(int lane) {
-        this.lane = lane;
-
-        switch (lane) {
-            case 0:
-                addAction(moveTo(getX(), trafficGame.lane0 - getHeight() / 2, 0.5f));
-                break;
-            case 1:
-                addAction(moveTo(getX(), trafficGame.lane1 - getHeight() / 2, 0.5f));
-                break;
-            case 2:
-                addAction(moveTo(getX(), trafficGame.lane2 - getHeight() / 2, 0.5f));
-                break;
-        }
-    }
-
-    public Rectangle getBounds() {
+       public Rectangle getBounds() {
         return bounds;
     }
 

@@ -10,8 +10,8 @@ import com.jatjsb.cargame.screens.MyGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.width = 720;
-        cfg.height = 1024;
+        cfg.width = 840;
+        cfg.height = 450;
 
 		new LwjglApplication( new MyGame(), cfg);
 	}

@@ -15,7 +15,7 @@ public class Road extends Actor {
     public Road(float width, float height) {
         setWidth(width);
         setHeight(height);
-        setPosition(0, 0);
+        setPosition(-0, 0);
     }
 
     @Override

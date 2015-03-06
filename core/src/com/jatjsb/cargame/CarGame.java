@@ -10,8 +10,8 @@ import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
 import com.jatjsb.cargame.screens.GameScreen;
 
 public class CarGame implements ApplicationListener {
-    public final static int WIDTH = 480;
-    public final static int HEIGHT = 800;
+    public final static int WIDTH = 840;
+    public final static int HEIGHT = 450;
 
     public CarGame(IHandleGooglePlay googlePlayHandler, IHandleAds adsHandler) {
         super();

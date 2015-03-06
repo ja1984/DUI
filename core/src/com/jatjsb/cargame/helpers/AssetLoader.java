@@ -22,17 +22,17 @@ public class AssetLoader {
 
     public static void load() {
 
-        Texture bgTexture = new Texture(Gdx.files.internal("road.png"));
-        road = new TextureRegion(bgTexture, 0, 0, 480, 840);
-        road.flip(false, true);
+        Texture bgTexture = new Texture(Gdx.files.internal("road_background_3lanes_old_new.png"));
+        road = new TextureRegion(bgTexture, 0, 0, 840, 450);
+        road.flip(false, false);
 
         Texture linesTexture = new Texture(Gdx.files.internal("lines.png"));
         lines = new TextureRegion(linesTexture, 0, 0, 480, 840);
         lines.flip(false, true);
 
-        Texture carTexture = new Texture(Gdx.files.internal("garbagetruck.png"));
+        Texture carTexture = new Texture(Gdx.files.internal("garbage_SW.png"));
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        enemyCar = new TextureRegion(carTexture, 0, 0, 19, 30);
+        enemyCar = new TextureRegion(carTexture, 0, 0, 35, 33);
         enemyCar.flip(false, false);
 
         Texture playerTexture = new Texture(Gdx.files.internal("car.png"));
