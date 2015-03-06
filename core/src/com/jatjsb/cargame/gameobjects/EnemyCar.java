@@ -35,7 +35,9 @@ public class EnemyCar extends Actor {
         this.lane = lane;
         setWidth(35);
         setHeight(33);
-        Gdx.app.log("Height", "" + getHeight());
+        Gdx.app.log("Lane", "" + lane);
+        this.setZIndex(lane);
+        Gdx.app.log("zIndex", "" + this.getZIndex());
         setPosition(position.x,position.y);
 
         //if(!isOncoming)
