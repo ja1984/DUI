@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by knepe on 2015-02-25.
  */
 public class AssetLoader {
-    public static TextureRegion road, enemyCar, playerCar, lines;
+    public static TextureRegion road, enemyCar, oncomingEnemyPlayer, playerCar, lines;
     public static Music backgroundMusic;
     public static Sound pop;
     private static ArrayList<TextureRegion> balloonTextureRegions = new ArrayList<TextureRegion>();
@@ -30,14 +30,21 @@ public class AssetLoader {
         lines = new TextureRegion(linesTexture, 0, 0, 480, 840);
         lines.flip(false, true);
 
-        Texture carTexture = new Texture(Gdx.files.internal("garbage_SW.png"));
+        Texture carTexture = new Texture(Gdx.files.internal("garbage_NE.png"));
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         enemyCar = new TextureRegion(carTexture, 0, 0, 35, 33);
         enemyCar.flip(false, false);
 
-        Texture playerTexture = new Texture(Gdx.files.internal("car.png"));
+
+        Texture oncomingcarTexture = new Texture(Gdx.files.internal("garbage_SW.png"));
         carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        playerCar = new TextureRegion(playerTexture, 0, 0, 18, 24);
+        oncomingEnemyPlayer = new TextureRegion(oncomingcarTexture, 0, 0, 35, 33);
+        oncomingEnemyPlayer.flip(false, false);
+
+
+        Texture playerTexture = new Texture(Gdx.files.internal("player.png"));
+        carTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        playerCar = new TextureRegion(playerTexture, 0, 0, 32, 27);
         playerCar.flip(false, false);
     }
 
