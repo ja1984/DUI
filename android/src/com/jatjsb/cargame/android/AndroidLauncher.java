@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.AdRequest;
@@ -20,8 +21,8 @@ import com.jatjsb.cargame.interfaces.EmptyHandleGooglePlay;
 import com.jatjsb.cargame.interfaces.IHandleAds;
 import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
 
-public class AndroidLauncher extends AndroidApplication implements IHandleAds {
-    private final String TAG = "FLAPPYFISH";
+public class AndroidLauncher extends AndroidApplication implements IHandleAds, IHandleGooglePlay {
+    private final String TAG = "DUI";
     final public static int RC_ACHIEVMENTS = 5002;
     final public static int RC_LEADER_BOARD = 5001;
 
@@ -61,7 +62,7 @@ public class AndroidLauncher extends AndroidApplication implements IHandleAds {
 
         // Do the stuff that initialize() would do for you
         // Create the libgdx View
-        View gameView = initializeForView(new BalloonPopper(new EmptyHandleGooglePlay(), this), config);
+        View gameView = initializeForView(new CarGame(this, this), config);
 
         // Create and setup the AdMob view
         adView = new AdView(this);
@@ -91,5 +92,40 @@ public class AndroidLauncher extends AndroidApplication implements IHandleAds {
     @Override
     public void showAds(boolean show) {
         handler.sendEmptyMessage(show ? SHOW_ADS : HIDE_ADS);
+    }
+
+    @Override
+    public void login() {
+        Gdx.app.log(TAG, "GPlay Login");
+    }
+
+    @Override
+    public void logout() {
+        Gdx.app.log(TAG, "GPlay Logout");
+    }
+
+    @Override
+    public boolean getSignedIn() {
+        return false;
+    }
+
+    @Override
+    public void submitScore(int score) {
+        Gdx.app.log(TAG, "GPlay submitScore(" + score + ")");
+    }
+
+    @Override
+    public void showLeaderboard() {
+        Gdx.app.log(TAG, "GPlay Showleaderboard");
+    }
+
+    @Override
+    public void unlockAchievement(String id) {
+        Gdx.app.log(TAG, "GPlay Unlock Achievement (" + id + ")");
+    }
+
+    @Override
+    public void showAchievements() {
+        Gdx.app.log(TAG, "GPlay ShowAcheivements");
     }
 }
