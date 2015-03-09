@@ -20,6 +20,7 @@ import com.jatjsb.cargame.interfaces.EmptyHandleAds;
 import com.jatjsb.cargame.interfaces.EmptyHandleGooglePlay;
 import com.jatjsb.cargame.interfaces.IHandleAds;
 import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
+import com.jatjsb.cargame.screens.MyGame;
 
 public class AndroidLauncher extends AndroidApplication implements IHandleAds, IHandleGooglePlay {
     private final String TAG = "DUI";
@@ -62,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication implements IHandleAds, I
 
         // Do the stuff that initialize() would do for you
         // Create the libgdx View
-        View gameView = initializeForView(new CarGame(this, this), config);
+        View gameView = initializeForView(new MyGame(this, this), config);
 
         // Create and setup the AdMob view
         adView = new AdView(this);

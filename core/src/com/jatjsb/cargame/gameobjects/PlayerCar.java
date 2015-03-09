@@ -3,6 +3,7 @@ package com.jatjsb.cargame.gameobjects;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jatjsb.cargame.helpers.AssetLoader;
 import com.jatjsb.cargame.world.GameWorld;
@@ -17,6 +18,8 @@ public class PlayerCar extends Actor {
     private Rectangle bounds = new Rectangle();
     private Rectangle safetyBounds = new Rectangle();
     private int lane;
+    private Vector2 vector2;
+    int rounds = 0;
 
     public PlayerCar(GameWorld trafficGame) {
         this.trafficGame = trafficGame;
@@ -25,12 +28,23 @@ public class PlayerCar extends Actor {
         lane = 2;
         setPosition(215,100);
         setColor(Color.YELLOW);
+        vector2 = new Vector2(25f, 25f);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         updateBounds();
+       // vector2.add(getX() * delta, getY() * delta);
+
+        if(rounds > 0)
+        {
+            setPosition(getX() + (vector2.x * delta), getY() - (vector2.y * delta));
+            rounds--;
+        }else{
+            setPosition(getX() - (vector2.x * delta), getY() + (vector2.y * delta));
+        }
+
     }
 
     @Override
@@ -64,5 +78,9 @@ public class PlayerCar extends Actor {
 
     public Rectangle getSafetyBounds() {
         return safetyBounds;
+    }
+
+    public void touch() {
+        rounds += 10;
     }
 }

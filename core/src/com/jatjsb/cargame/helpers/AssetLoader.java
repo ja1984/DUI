@@ -23,6 +23,7 @@ public class AssetLoader {
     public static void load() {
 
         Texture bgTexture = new Texture(Gdx.files.internal("road_background_3lanes_old_new.png"));
+        bgTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         road = new TextureRegion(bgTexture, 0, 0, 840, 450);
         road.flip(false, false);
 

@@ -1,6 +1,7 @@
 package com.jatjsb.cargame.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
@@ -52,6 +53,17 @@ public class GameWorld extends Table {
 
         random = new Random();
         enemyCars = new Array<EnemyCar>();
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            public boolean touchDown (int x, int y, int pointer, int button) {
+                // your touch down code here
+                return true; // return true to indicate the event was handled
+            }
+
+            public boolean touchUp (int x, int y, int pointer, int button) {
+                playerCar.touch();
+                return true; // return true to indicate the event was handled
+            }
+        });
     }
 
     private void spawnCar() {

@@ -13,6 +13,6 @@ public class DesktopLauncher {
         cfg.width = 840;
         cfg.height = 450;
 
-		new LwjglApplication( new MyGame(), cfg);
+		new LwjglApplication( new MyGame(new EmptyHandleGooglePlay(), new EmptyHandleAds()), cfg);
 	}
 }
