@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -26,6 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 public class EnemyCar extends Actor {
 
     private Rectangle bounds = new Rectangle();
+    com.badlogic.gdx.math.Polygon polygon;
     private Boolean isOncoming;
     private long lastCarTime = 0;
     private int lane;
@@ -39,6 +41,10 @@ public class EnemyCar extends Actor {
         this.setZIndex(lane);
         Gdx.app.log("zIndex", "" + this.getZIndex());
         setPosition(position.x,position.y);
+        bounds = new Rectangle(0,0, getWidth(), getHeight());
+        polygon = new com.badlogic.gdx.math.Polygon(new float[]{0,0,bounds.width,0,bounds.width,bounds.height,0,bounds.height});
+        polygon.setOrigin(bounds.width/2, bounds.height/2);
+        polygon.setRotation(45f);
 
         //if(!isOncoming)
           //  setScale(180);
@@ -61,6 +67,8 @@ public class EnemyCar extends Actor {
         super.act(delta);
         //changeLane();
         updateBounds();
+        if(getX() <= (lane * 30))
+            crash(false, false);
     }
 
     @Override
@@ -101,6 +109,7 @@ public class EnemyCar extends Actor {
 
     private void updateBounds() {
         bounds.set(getX(), getY(), getWidth(), getHeight());
+        polygon.setPosition(getX(), getY());
     }
 
     public void crash(boolean front, boolean above) {
@@ -109,7 +118,7 @@ public class EnemyCar extends Actor {
         removeActor();
     }
 
-    public Rectangle getBounds() {
-        return bounds;
+    public Polygon getBounds() {
+        return polygon;
     }
 }

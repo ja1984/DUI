@@ -2,11 +2,14 @@ package com.jatjsb.cargame.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.jatjsb.cargame.helpers.AssetLoader;
 import com.jatjsb.cargame.world.GameWorld;
+
+import java.awt.Polygon;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 
@@ -16,9 +19,11 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 public class PlayerCar extends Actor {
     private GameWorld trafficGame;
     private Rectangle bounds = new Rectangle();
+    com.badlogic.gdx.math.Polygon polygon;
     private Rectangle safetyBounds = new Rectangle();
     private int lane;
     private Vector2 vector2;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     int rounds = 0;
 
     public PlayerCar(GameWorld trafficGame) {
@@ -26,8 +31,12 @@ public class PlayerCar extends Actor {
         setWidth(32);
         setHeight(27);
         lane = 2;
-        setPosition(215,100);
+        setPosition(215, 100);
         setColor(Color.YELLOW);
+        bounds = new Rectangle(0,0, getWidth(), getHeight());
+        polygon = new com.badlogic.gdx.math.Polygon(new float[]{0,0,bounds.width,0,bounds.width,bounds.height,0,bounds.height});
+        polygon.setOrigin(bounds.width/2, bounds.height/2);
+        polygon.setRotation(45f);
         vector2 = new Vector2(25f, 25f);
     }
 
@@ -56,6 +65,7 @@ public class PlayerCar extends Actor {
 
     private void updateBounds() {
         bounds.set(getX(), getY(), getWidth(), getHeight());
+        polygon.setPosition(getX(), getY());
     }
 
     private void updateSafetyBounds() {
@@ -72,8 +82,8 @@ public class PlayerCar extends Actor {
             //moveToLane(lane - 1);
     }
 
-       public Rectangle getBounds() {
-        return bounds;
+       public com.badlogic.gdx.math.Polygon getBounds() {
+        return polygon;
     }
 
     public Rectangle getSafetyBounds() {
@@ -81,6 +91,6 @@ public class PlayerCar extends Actor {
     }
 
     public void touch() {
-        rounds += 10;
+        rounds += 12;
     }
 }

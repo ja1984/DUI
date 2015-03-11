@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -112,11 +113,11 @@ public class GameWorld extends Table {
         Iterator<EnemyCar> iter = enemyCars.iterator();
         while (iter.hasNext()) {
             EnemyCar enemyCar = iter.next();
-            if (enemyCar.getBounds().x + enemyCar.getWidth() <= 0) {
+            if (enemyCar.getBounds().getX() + enemyCar.getWidth() <= 0) {
                 iter.remove();
                 removeActor(enemyCar);
             }
-            if (enemyCar.getBounds().overlaps(playerCar.getBounds())) {
+            if (Intersector.overlapConvexPolygons(enemyCar.getBounds(), playerCar.getBounds())) {
                 iter.remove();
                 if (enemyCar.getX() > playerCar.getX()) {
                     if (enemyCar.getY() > playerCar.getY())
