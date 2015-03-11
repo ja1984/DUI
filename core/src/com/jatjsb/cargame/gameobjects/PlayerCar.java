@@ -17,8 +17,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 public class PlayerCar extends Actor {
     private GameWorld trafficGame;
     private Rectangle bounds = new Rectangle();
-    private Rectangle safetyBounds = new Rectangle();
     private Polygon polygon;
+    private Rectangle safetyBounds = new Rectangle();
     private int lane;
     private Vector2 vector2;
     int rounds = 0;
@@ -28,10 +28,12 @@ public class PlayerCar extends Actor {
         setWidth(32);
         setHeight(27);
         lane = 2;
-        setPosition(215,100);
+        setPosition(215, 100);
         setColor(Color.YELLOW);
+        bounds = new Rectangle(0,0, getWidth(), getHeight());
         vector2 = new Vector2(25f, 25f);
         setRotation(45f);
+
         polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
         polygon.setOrigin(bounds.width/2, bounds.height/2);
         polygon.setRotation(45f);
@@ -88,6 +90,6 @@ public class PlayerCar extends Actor {
     }
 
     public void touch() {
-        rounds += 10;
+        rounds += 12;
     }
 }

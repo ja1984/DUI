@@ -53,13 +53,15 @@ public class EnemyCar extends Actor {
         super.act(delta);
         //changeLane();
         updateBounds();
+        if(getX() <= (lane * 30))
+            crash(false, false);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,getRotation());
+        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width/2,polygon.getBoundingRectangle().height/2,getWidth(),getHeight(),1,1,getRotation());
 
     }
 
