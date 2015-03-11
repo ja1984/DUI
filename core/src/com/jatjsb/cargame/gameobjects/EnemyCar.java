@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -26,6 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 public class EnemyCar extends Actor {
 
     private Rectangle bounds = new Rectangle();
+    private Polygon polygon;
     private Boolean isOncoming;
     private long lastCarTime = 0;
     private int lane;
@@ -39,20 +41,10 @@ public class EnemyCar extends Actor {
         this.setZIndex(lane);
         Gdx.app.log("zIndex", "" + this.getZIndex());
         setPosition(position.x,position.y);
-
-        //if(!isOncoming)
-          //  setScale(180);
-
-        //int rnd = MathUtils.random(0, 3);
-        //if (rnd == 0)
-        //    setColor(Color.RED);
-        //if (rnd == 1)
-        //    setColor(Color.GREEN);
-        //if (rnd == 2)
-        //    setColor(Color.WHITE);
-        //if (rnd == 3)
-        //    setColor(Color.BLUE);
-
+        polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
+        polygon.setOrigin(bounds.width/2, bounds.height/2);
+        polygon.setRotation(45f);
+        setRotation(45f);
         addAction(moveTo(endPosition.x, endPosition.y, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
     }
 
@@ -66,7 +58,9 @@ public class EnemyCar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
-        batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, getRotation());
+        batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
+        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,getRotation());
+
     }
 
     private void changeLane(){
@@ -101,6 +95,7 @@ public class EnemyCar extends Actor {
 
     private void updateBounds() {
         bounds.set(getX(), getY(), getWidth(), getHeight());
+        polygon.setPosition(getX(), getY());
     }
 
     public void crash(boolean front, boolean above) {
@@ -109,7 +104,11 @@ public class EnemyCar extends Actor {
         removeActor();
     }
 
-    public Rectangle getBounds() {
-        return bounds;
+    //public Rectangle getBounds() {
+    //    return bounds;
+    //}
+
+    public Polygon getBounds(){
+        return polygon;
     }
 }

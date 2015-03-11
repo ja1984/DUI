@@ -2,6 +2,7 @@ package com.jatjsb.cargame.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,6 +18,7 @@ public class PlayerCar extends Actor {
     private GameWorld trafficGame;
     private Rectangle bounds = new Rectangle();
     private Rectangle safetyBounds = new Rectangle();
+    private Polygon polygon;
     private int lane;
     private Vector2 vector2;
     int rounds = 0;
@@ -29,6 +31,10 @@ public class PlayerCar extends Actor {
         setPosition(215,100);
         setColor(Color.YELLOW);
         vector2 = new Vector2(25f, 25f);
+        setRotation(45f);
+        polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
+        polygon.setOrigin(bounds.width/2, bounds.height/2);
+        polygon.setRotation(45f);
     }
 
     @Override
@@ -50,12 +56,13 @@ public class PlayerCar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
-        batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2,
-                getWidth(), getHeight(), 1, 1, getRotation());
+        batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
+        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,getRotation());
     }
 
     private void updateBounds() {
         bounds.set(getX(), getY(), getWidth(), getHeight());
+        polygon.setPosition(getX(), getY());
     }
 
     private void updateSafetyBounds() {
@@ -72,8 +79,8 @@ public class PlayerCar extends Actor {
             //moveToLane(lane - 1);
     }
 
-       public Rectangle getBounds() {
-        return bounds;
+       public Polygon getBounds() {
+        return polygon;
     }
 
     public Rectangle getSafetyBounds() {
