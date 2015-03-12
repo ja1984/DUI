@@ -40,8 +40,8 @@ public class EnemyCar extends Actor {
         this.setZIndex(lane);
         setPosition(position.x,position.y);
         polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
-        polygon.setOrigin(bounds.width/2, bounds.height/2);
-        polygon.setRotation(-45f);
+        polygon.setOrigin(getWidth()/2, getHeight()/2);
+        polygon.setRotation(isOncoming ? 45f : -45f);
         addAction(moveTo(endPosition.x, endPosition.y, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
     }
 
@@ -58,7 +58,7 @@ public class EnemyCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width/2,polygon.getBoundingRectangle().height/2,getWidth(),getHeight(),1,1,polygon.getRotation());
+        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
 
     }
 
