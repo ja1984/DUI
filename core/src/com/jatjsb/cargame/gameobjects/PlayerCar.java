@@ -33,7 +33,7 @@ public class PlayerCar extends Actor {
         vector2 = new Vector2(25f, 25f);
         polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
         polygon.setOrigin(bounds.width/2, bounds.height/2);
-        polygon.setRotation(45f);
+        polygon.setRotation(90f);
     }
 
     @Override
