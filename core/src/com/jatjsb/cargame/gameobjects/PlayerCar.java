@@ -18,7 +18,6 @@ public class PlayerCar extends Actor {
     private GameWorld trafficGame;
     private Rectangle bounds = new Rectangle();
     private Polygon polygon;
-    private Rectangle safetyBounds = new Rectangle();
     private int lane;
     private Vector2 vector2;
     int rounds = 0;
@@ -32,9 +31,7 @@ public class PlayerCar extends Actor {
         setColor(Color.YELLOW);
         bounds = new Rectangle(0,0, getWidth(), getHeight());
         vector2 = new Vector2(25f, 25f);
-        setRotation(45f);
-
-        polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
+        polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
         polygon.setOrigin(bounds.width/2, bounds.height/2);
         polygon.setRotation(45f);
     }
@@ -43,14 +40,13 @@ public class PlayerCar extends Actor {
     public void act(float delta) {
         super.act(delta);
         updateBounds();
-       // vector2.add(getX() * delta, getY() * delta);
-
         if(rounds > 0)
         {
             setPosition(getX() + (vector2.x * delta), getY() - (vector2.y * delta));
             rounds--;
         }else{
-            setPosition(getX() - (vector2.x * delta), getY() + (vector2.y * delta));
+            if(getX() > 150)
+                setPosition(getX() - (vector2.x * delta), getY() + (vector2.y * delta));
         }
 
     }
@@ -59,7 +55,7 @@ public class PlayerCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,getRotation());
+        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,polygon.getRotation());
     }
 
     private void updateBounds() {
@@ -67,26 +63,8 @@ public class PlayerCar extends Actor {
         polygon.setPosition(getX(), getY());
     }
 
-    private void updateSafetyBounds() {
-        safetyBounds.set(getX(), getY(), getWidth(), (getHeight() + 10));
-    }
-
-    public void tryMoveUp() {
-        //if ((getActions().size == 0) && (lane != 2))
-            //moveToLane(lane + 1);
-    }
-
-    public void tryMoveDown() {
-        //if ((getActions().size == 0) && (lane != 0))
-            //moveToLane(lane - 1);
-    }
-
-       public Polygon getBounds() {
+    public Polygon getBounds() {
         return polygon;
-    }
-
-    public Rectangle getSafetyBounds() {
-        return safetyBounds;
     }
 
     public void touch() {
