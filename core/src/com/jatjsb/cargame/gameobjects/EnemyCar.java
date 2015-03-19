@@ -3,7 +3,9 @@ package com.jatjsb.cargame.gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -33,6 +35,7 @@ public class EnemyCar extends Actor {
     private Boolean isOncoming;
     private long lastCarTime = 0;
     private int lane;
+    private ShapeRenderer sr = new ShapeRenderer();
 
     public EnemyCar(Vector2 position,Vector2 endPosition, Boolean isOncoming, int lane) {
         this.isOncoming = isOncoming;
@@ -42,7 +45,16 @@ public class EnemyCar extends Actor {
         setHeight(this.carType.getHeight());
         this.setZIndex(lane);
         setPosition(position.x,position.y);
-        polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
+
+        // an array where every even element represents the horizontal part of a point,
+        // and the following element representing the vertical part
+        polygon = new Polygon(new float[]{         // Four vertices
+                0,0,                               // Vertex 0         3--2
+                getHeight(),0,                     // Vertex 1         | /|
+                getHeight(),getWidth(),            // Vertex 2         |/ |
+                0,getWidth()                       // Vertex 3         0--1
+        });
+
         polygon.setOrigin(getWidth()/2, getHeight()/2);
         polygon.setRotation(isOncoming ? 45f : -45f);
         addAction(moveTo(endPosition.x, endPosition.y, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
@@ -61,10 +73,15 @@ public class EnemyCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(isOncoming ? this.carType.getFlippedTextureRegion() :  this.carType.getTextureRegion(), getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-
         if(GameWorld.debug)
-            batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
-
+        {
+            batch.end();
+            sr.setColor(Color.RED);
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            sr.polygon(polygon.getTransformedVertices());
+            sr.end();
+            batch.begin();
+        }
     }
 
     private void changeLane(){

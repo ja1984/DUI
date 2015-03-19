@@ -2,6 +2,9 @@ package com.jatjsb.cargame.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +24,8 @@ public class PlayerCar extends Actor {
     private int lane;
     private Vector2 vector2;
     Boolean touched = false;
+    private ShapeRenderer sr = new ShapeRenderer();
+
 
     public PlayerCar(GameWorld trafficGame) {
         this.trafficGame = trafficGame;
@@ -31,7 +36,8 @@ public class PlayerCar extends Actor {
         setColor(Color.YELLOW);
         bounds = new Rectangle(0,0, getWidth(), getHeight());
         vector2 = new Vector2(25f, 25f);
-        polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
+
+        polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
         polygon.setOrigin(getWidth()/2, getHeight()/2);
         polygon.setRotation(45f);
 
@@ -58,7 +64,14 @@ public class PlayerCar extends Actor {
         batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
 
         if(GameWorld.debug)
-            batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
+        {
+            batch.end();
+            sr.setColor(Color.RED);
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            sr.polygon(polygon.getTransformedVertices());
+            sr.end();
+            batch.begin();
+        }
     }
 
     private void updateBounds() {
@@ -77,4 +90,5 @@ public class PlayerCar extends Actor {
     public void touch() {
         touched = true;
     }
+
 }

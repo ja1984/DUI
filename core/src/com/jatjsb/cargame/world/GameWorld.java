@@ -37,7 +37,7 @@ public class GameWorld extends Table {
 
    public static Vector2 lane3 = new Vector2(800,390);
    public static Vector2 lane3_end = new Vector2(0,-10);
-    public static boolean debug = false;
+    public static boolean debug = true;
 
     public PlayerCar playerCar;
     private Random random;

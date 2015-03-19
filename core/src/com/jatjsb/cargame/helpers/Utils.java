@@ -3,6 +3,9 @@ package com.jatjsb.cargame.helpers;
 import com.jatjsb.cargame.gameobjects.cartypes.BaseCar;
 
 import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ConfigurationBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +29,14 @@ public class Utils {
     }
 
     private static void loadBaseCarSubTypes(){
-        Reflections reflections = new Reflections("com.jatjsb.cargame.gameobjects.cartypes");
-        Set<Class<? extends BaseCar>> subTypes = reflections.getSubTypesOf(BaseCar.class);
+        Reflections reflections = new Reflections( "com.jatjsb.cargame.gameobjects.cartypes", new SubTypesScanner(false), new TypeAnnotationsScanner());
+
+        Set<Class<? extends BaseCar>> subTypes = reflections.getSubTypesOf(com.jatjsb.cargame.gameobjects.cartypes.BaseCar.class);
         baseCarSubTypes = new ArrayList<Class<? extends BaseCar>>(subTypes);
     }
 
     public static BaseCar getRandomCarType(){
-        if(baseCarSubTypes == null)
+        if(baseCarSubTypes == null || baseCarSubTypes.size() == 0)
             loadBaseCarSubTypes();
 
         int random = Utils.getRandomIntBetween(0, baseCarSubTypes.size());
