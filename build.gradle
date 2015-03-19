@@ -75,6 +75,7 @@ project(":core") {
 
 
     dependencies {
+        compile 'org.reflections:reflections:0.9.5-RC2'
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
