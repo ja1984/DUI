@@ -12,7 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jatjsb.cargame.gameobjects.cartypes.BaseCar;
 import com.jatjsb.cargame.helpers.AssetLoader;
+import com.jatjsb.cargame.helpers.Utils;
 import com.jatjsb.cargame.world.GameWorld;
 
 import sun.rmi.runtime.Log;
@@ -25,7 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
  * Created by knepe on 2015-02-25.
  */
 public class EnemyCar extends Actor {
-
+    private BaseCar carType;
     private Rectangle bounds = new Rectangle();
     private Polygon polygon;
     private Boolean isOncoming;
@@ -35,8 +37,9 @@ public class EnemyCar extends Actor {
     public EnemyCar(Vector2 position,Vector2 endPosition, Boolean isOncoming, int lane) {
         this.isOncoming = isOncoming;
         this.lane = lane;
-        setWidth(35);
-        setHeight(33);
+        this.carType = Utils.getRandomCarType();
+        setWidth(this.carType.getWidth());
+        setHeight(this.carType.getHeight());
         this.setZIndex(lane);
         setPosition(position.x,position.y);
         polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
@@ -57,7 +60,7 @@ public class EnemyCar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
-        batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
+        batch.draw(isOncoming ? this.carType.getFlippedTextureRegion() :  this.carType.getTextureRegion(), getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
 
         if(GameWorld.debug)
             batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
