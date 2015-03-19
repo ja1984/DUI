@@ -58,7 +58,9 @@ public class EnemyCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(isOncoming ? AssetLoader.oncomingEnemyPlayer :  AssetLoader.enemyCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
+
+        if(GameWorld.debug)
+            batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
 
     }
 

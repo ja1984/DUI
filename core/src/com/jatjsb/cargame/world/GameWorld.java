@@ -37,6 +37,7 @@ public class GameWorld extends Table {
 
    public static Vector2 lane3 = new Vector2(800,390);
    public static Vector2 lane3_end = new Vector2(0,-10);
+    public static boolean debug = false;
 
     public PlayerCar playerCar;
     private Random random;
@@ -57,11 +58,12 @@ public class GameWorld extends Table {
         Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean touchDown (int x, int y, int pointer, int button) {
                 // your touch down code here
+                playerCar.touch();
                 return true; // return true to indicate the event was handled
             }
 
             public boolean touchUp (int x, int y, int pointer, int button) {
-                playerCar.touch();
+                playerCar.release();
                 return true; // return true to indicate the event was handled
             }
         });

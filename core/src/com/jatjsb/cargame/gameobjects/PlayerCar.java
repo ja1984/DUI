@@ -20,7 +20,7 @@ public class PlayerCar extends Actor {
     private Polygon polygon;
     private int lane;
     private Vector2 vector2;
-    int rounds = 0;
+    Boolean touched = false;
 
     public PlayerCar(GameWorld trafficGame) {
         this.trafficGame = trafficGame;
@@ -32,20 +32,21 @@ public class PlayerCar extends Actor {
         bounds = new Rectangle(0,0, getWidth(), getHeight());
         vector2 = new Vector2(25f, 25f);
         polygon = new Polygon(new float[]{0,0,getHeight(),0,getHeight(),getWidth(),0,getWidth()});
-        polygon.setOrigin(bounds.width/2, bounds.height/2);
-        polygon.setRotation(90f);
+        polygon.setOrigin(getWidth()/2, getHeight()/2);
+        polygon.setRotation(45f);
+
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
         updateBounds();
-        if(rounds > 0)
+        if(touched)
         {
+            if(getX() < 244)
             setPosition(getX() + (vector2.x * delta), getY() - (vector2.y * delta));
-            rounds--;
         }else{
-            if(getX() > 150)
+            if(getX() > 135)
                 setPosition(getX() - (vector2.x * delta), getY() + (vector2.y * delta));
         }
 
@@ -55,7 +56,9 @@ public class PlayerCar extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
-        batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getBoundingRectangle().width,polygon.getBoundingRectangle().height,getWidth(),getHeight(),1,1,polygon.getRotation());
+
+        if(GameWorld.debug)
+            batch.draw(AssetLoader.hitbox,polygon.getX(), polygon.getY(), polygon.getOriginX(),polygon.getOriginY(),getWidth(),getHeight(),1,1,polygon.getRotation());
     }
 
     private void updateBounds() {
@@ -67,7 +70,11 @@ public class PlayerCar extends Actor {
         return polygon;
     }
 
+    public void release(){
+        touched = false;
+    }
+
     public void touch() {
-        rounds += 12;
+        touched = true;
     }
 }
