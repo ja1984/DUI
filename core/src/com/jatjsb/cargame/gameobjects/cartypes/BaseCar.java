@@ -29,10 +29,10 @@ public class BaseCar {
     }
 
     public int getWidth(){
-        return this.width;
+        return this.textureRegion.getRegionWidth();
     }
 
     public int getHeight(){
-        return this.height;
+        return this.textureRegion.getRegionHeight();
     }
 }

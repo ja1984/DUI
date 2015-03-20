@@ -2,6 +2,7 @@ package com.jatjsb.cargame.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
@@ -54,6 +55,13 @@ public class AssetLoader {
         Texture texture = new Texture(Gdx.files.internal(file));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         return texture;
+    }
+
+    public static ParticleEffect getParticleEffect(){
+        ParticleEffect particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal("particle/explosion.p"), Gdx.files.internal("particle"));
+        particleEffect.setFlip(false, true);
+        return particleEffect;
     }
 
     public static void setHighScore(int val) {

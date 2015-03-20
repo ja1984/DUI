@@ -3,6 +3,7 @@ package com.jatjsb.cargame.gameobjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -36,6 +37,8 @@ public class EnemyCar extends Actor {
     private long lastCarTime = 0;
     private int lane;
     private ShapeRenderer sr = new ShapeRenderer();
+    private ParticleEffect particleEffect;
+    private boolean explode = false;
 
     public EnemyCar(Vector2 position,Vector2 endPosition, Boolean isOncoming, int lane) {
         this.isOncoming = isOncoming;
@@ -45,6 +48,7 @@ public class EnemyCar extends Actor {
         setHeight(this.carType.getHeight());
         this.setZIndex(lane);
         setPosition(position.x,position.y);
+        this.particleEffect = AssetLoader.getParticleEffect();
 
         // an array where every even element represents the horizontal part of a point,
         // and the following element representing the vertical part
@@ -60,19 +64,27 @@ public class EnemyCar extends Actor {
         addAction(moveTo(endPosition.x, endPosition.y, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
     }
 
+    private void explode(){
+        explode = true;
+        particleEffect.start();
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
         //changeLane();
         updateBounds();
+        particleEffect.setPosition(getX(), getY());
         if(getX() <= (lane * 30))
-            crash(false, false);
+            crash(false, false, false);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(isOncoming ? this.carType.getFlippedTextureRegion() :  this.carType.getTextureRegion(), getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
+        if(explode)
+            particleEffect.draw(batch, Gdx.graphics.getDeltaTime());
         if(GameWorld.debug)
         {
             batch.end();
@@ -119,9 +131,11 @@ public class EnemyCar extends Actor {
         polygon.setPosition(getX(), getY());
     }
 
-    public void crash(boolean front, boolean above) {
+    public void crash(boolean front, boolean above, boolean explode) {
         clearActions();
-        addAction(fadeOut(1f));
+        if(explode)
+            explode();
+        addAction(fadeOut(0.2f));
         removeActor();
     }
 

@@ -124,14 +124,14 @@ public class GameWorld extends Table {
                 iter.remove();
                 if (enemyCar.getX() > playerCar.getX()) {
                     if (enemyCar.getY() > playerCar.getY())
-                        enemyCar.crash(true, true);
+                        enemyCar.crash(true, true, true);
                     else
-                        enemyCar.crash(true, false);
+                        enemyCar.crash(true, false, true);
                 } else {
                     if (enemyCar.getY() > playerCar.getY())
-                        enemyCar.crash(false, true);
+                        enemyCar.crash(false, true, true);
                     else
-                        enemyCar.crash(false, false);
+                        enemyCar.crash(false, false, true);
                 }
             }
         }
