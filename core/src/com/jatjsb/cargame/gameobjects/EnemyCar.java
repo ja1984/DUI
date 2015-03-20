@@ -50,13 +50,13 @@ public class EnemyCar extends Actor {
         // and the following element representing the vertical part
         polygon = new Polygon(new float[]{         // Four vertices
                 0,0,                               // Vertex 0         3--2
-                getHeight(),0,                     // Vertex 1         | /|
-                getHeight(),getWidth(),            // Vertex 2         |/ |
-                0,getWidth()                       // Vertex 3         0--1
+                getWidth(),0,                     // Vertex 1         | /|
+                getWidth(),getHeight(),            // Vertex 2         |/ |
+                0,getHeight()                       // Vertex 3         0--1
         });
 
         polygon.setOrigin(getWidth()/2, getHeight()/2);
-        polygon.setRotation(isOncoming ? 45f : -45f);
+        polygon.setRotation(30f);
         addAction(moveTo(endPosition.x, endPosition.y, (isOncoming ? MathUtils.random(4.0f, 6.0f) : MathUtils.random(8.0f, 10.0f))));
     }
 

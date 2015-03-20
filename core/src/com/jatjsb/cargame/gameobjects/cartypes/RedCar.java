@@ -4,6 +4,6 @@ import com.jatjsb.cargame.helpers.AssetLoader;
 
 public class RedCar extends BaseCar {
     public RedCar() {
-        super(AssetLoader.redCar, AssetLoader.redCarFlipped, 35, 35);
+        super(AssetLoader.redCar, AssetLoader.redCarFlipped, 32, 27);
     }
 }

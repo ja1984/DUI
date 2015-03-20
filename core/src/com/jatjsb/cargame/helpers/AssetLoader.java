@@ -41,7 +41,7 @@ public class AssetLoader {
 
         redCar = new TextureRegion(loadTexture("carRed5_000.png"), 0, 0, 32, 24);
         redCar.flip(false, false);
-        redCarFlipped = new TextureRegion(loadTexture("carRed5_004.png"),0 ,0 ,33, 27);
+        redCarFlipped = new TextureRegion(loadTexture("carRed5_004.png"),0 ,0 ,32, 27);
         redCarFlipped.flip(false, false);
 
         hitbox = new TextureRegion(loadTexture("hitbox.png"), 0, 0, 30, 30);
