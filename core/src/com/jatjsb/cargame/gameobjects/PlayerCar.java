@@ -1,7 +1,9 @@
 package com.jatjsb.cargame.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -25,6 +27,7 @@ public class PlayerCar extends Actor {
     private Vector2 vector2;
     Boolean touched = false;
     private ShapeRenderer sr = new ShapeRenderer();
+    private ParticleEffect sparksParticleEffect;
 
 
     public PlayerCar(GameWorld trafficGame) {
@@ -40,7 +43,8 @@ public class PlayerCar extends Actor {
         polygon = new Polygon(new float[]{0,0,getWidth(),0,getWidth(),getHeight(),0,getHeight()});
         polygon.setOrigin(getWidth()/2, getHeight()/2);
         polygon.setRotation(30f);
-
+        sparksParticleEffect = AssetLoader.sparksParticleEffect;
+        sparksParticleEffect.start();
     }
 
     @Override
@@ -55,11 +59,12 @@ public class PlayerCar extends Actor {
             if(getX() > 135)
                 setPosition(getX() - (vector2.x * delta), getY() + (vector2.y * delta));
         }
-
+        sparksParticleEffect.setPosition(getX() + 5, getY() +5);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        sparksParticleEffect.draw(batch, Gdx.graphics.getDeltaTime());
         batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a);
         batch.draw(AssetLoader.playerCar, getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(), getHeight(), 1, 1, 0);
 

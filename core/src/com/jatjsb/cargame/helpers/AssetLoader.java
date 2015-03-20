@@ -16,6 +16,7 @@ public class AssetLoader {
     public static TextureRegion redCar;
     public static TextureRegion garbageCarFlipped;
     public static TextureRegion garbageCar;
+    public static ParticleEffect sparksParticleEffect;
 
     public static void load() {
         road = new TextureRegion(loadTexture("road_background_3lanes_old_new.png"), 0, 0, 840, 450);
@@ -49,6 +50,10 @@ public class AssetLoader {
 
         playerCar = new TextureRegion(loadTexture("player.png"), 0, 0, 32, 27);
         playerCar.flip(false, false);
+
+        sparksParticleEffect = new ParticleEffect();
+        sparksParticleEffect.load(Gdx.files.internal("particle/sparks.p"), Gdx.files.internal("particle"));
+        sparksParticleEffect.setFlip(false, true);
     }
 
     private static Texture loadTexture(String file){
