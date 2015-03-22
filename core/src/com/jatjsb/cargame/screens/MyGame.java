@@ -11,7 +11,6 @@ import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
 public class MyGame extends Game {
     public final static int WIDTH = 840;
     public final static int HEIGHT = 450;
-    private GameScreen gameScreen;
 
     public MyGame(IHandleGooglePlay googlePlayHandler, IHandleAds adsHandler) {
         super();
@@ -25,14 +24,13 @@ public class MyGame extends Game {
     @Override
     public void create() {
         AssetLoader.load();
-        gameScreen = new GameScreen();
-        setScreen(gameScreen);
+        setScreen(new MainScreen());
         adsHandler.showAds(true);
     }
 
     @Override
     public void dispose() {
         AssetLoader.dispose();
-        gameScreen.dispose();
+        getScreen().dispose();
     }
 }

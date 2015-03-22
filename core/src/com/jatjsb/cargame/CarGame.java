@@ -4,10 +4,12 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jatjsb.cargame.helpers.AssetLoader;
 import com.jatjsb.cargame.interfaces.IHandleAds;
 import com.jatjsb.cargame.interfaces.IHandleGooglePlay;
 import com.jatjsb.cargame.screens.GameScreen;
+import com.jatjsb.cargame.world.GameWorld;
 
 public class CarGame implements ApplicationListener {
     public final static int WIDTH = 840;

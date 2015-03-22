@@ -3,11 +3,14 @@ package com.jatjsb.cargame.helpers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetLoader {
     public static TextureRegion road, playerCar, lines, hitbox;
 
+    public static Skin menuSkin;
     public static TextureRegion ambulance;
     public static TextureRegion ambulanceFlipped;
     public static TextureRegion blueCarFlipped;
@@ -54,6 +57,8 @@ public class AssetLoader {
         sparksParticleEffect = new ParticleEffect();
         sparksParticleEffect.load(Gdx.files.internal("particle/sparks.p"), Gdx.files.internal("particle"));
         sparksParticleEffect.setFlip(false, true);
+
+        menuSkin = new Skin(Gdx.files.internal("skins/menuskin.json"), new TextureAtlas(Gdx.files.internal("skins/menuskin.atlas")));
     }
 
     private static Texture loadTexture(String file){
